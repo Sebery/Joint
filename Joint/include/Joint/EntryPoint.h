@@ -3,7 +3,7 @@
 #include "Joint/Application.h"
 
 int main() {
-    auto app{ Application::CreateApplication() };
+    auto app{ Joint::Application::CreateApplication() };
 
     if (!app->Initialize())
         return -1;

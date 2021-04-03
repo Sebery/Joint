@@ -1,64 +1,63 @@
 #include "Joint/Application.h"
 #include <iostream>
 
-bool Application::Initialize() {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+namespace Joint {
 
-    if (__APPLE__)
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    std::unique_ptr<Application> Application::CreateApplication() {
+        static bool created{ false };
 
-    if (!glfwInit())
-        return false;
-
-    mainWindow.SetWindow("Joint", 400, 400);
-    if (!mainWindow.AsWindow())
-        return false;
-
-    glfwMakeContextCurrent(mainWindow.AsWindow());
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "Failed to initialize OpenGL context" << std::endl;
-        return false;
+        if (!created) {
+            created = true;
+            return std::unique_ptr<Application>(new Application);
+        } else {
+            std::cout << "App Already Created\n";
+            return std::unique_ptr<Application>(nullptr);
+        }
     }
 
-    return true;
-}
+    Application::Application()
+        : mainWindow{ }  { std::cout << "App Created\n"; }
 
-void Application::Run() {
-    while (!glfwWindowShouldClose(mainWindow.AsWindow())) {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-        glfwSwapBuffers(mainWindow.AsWindow());
-
-        glfwPollEvents();
+    Application::~Application() {
+        std::cout << "App Deleted\n";
+        Terminate();
     }
-}
 
-void Application::Terminate() {
-    glfwTerminate();
-}
+    bool Application::Initialize() {
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-std::unique_ptr<Application> Application::CreateApplication() {
-    static bool created{ false };
+        if (__APPLE__)
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    if (!created) {
-        created = true;
-        return std::unique_ptr<Application>(new Application);
-    } else {
-        std::cout << "App Already Created\n";
-        return std::unique_ptr<Application>(nullptr);
+        if (!glfwInit())
+            return false;
+
+        if (!mainWindow.SetWindow("Joint", 400, 400))
+            return false;
+
+        mainWindow.MakeContextCurrent();
+
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+            return false;
+
+        return true;
     }
-}
 
-Application::Application()
-    : mainWindow() {
-    std::cout << "App Created\n";
-}
+    void Application::Run() {
+        while (!mainWindow.WindowShouldClose()) {
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-Application::~Application() {
-    std::cout << "App Deleted\n";
-    Terminate();
+            mainWindow.SwapBuffers();
+
+            glfwPollEvents();
+        }
+    }
+
+    void Application::Terminate() {
+        glfwTerminate();
+    }
+
 }

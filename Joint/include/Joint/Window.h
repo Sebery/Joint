@@ -2,6 +2,30 @@
 
 #include <GLFW/glfw3.h>
 
+namespace Joint {
+
+    class Window {
+    public:
+        Window();
+        Window(const char* title, int width, int height);
+        Window(Window&& wnd) noexcept;
+        Window(const Window& wnd) = delete;
+        ~Window();
+    public:
+        Window& operator=(Window&& wnd) noexcept;
+        Window& operator=(const Window& wnd) = delete;
+    public:
+        bool SetWindow(const char* title, int width, int height);
+        void MakeContextCurrent();
+        int WindowShouldClose() const;
+        void SwapBuffers();
+    private:
+        GLFWwindow* window;
+    };
+
+}
+
+/*
 class Window {
 public:
     Window();
@@ -13,25 +37,6 @@ public:
     GLFWwindow* AsWindow();
 private:
     GLFWwindow* window;
-};
-
-
-/*
-#pragma once
-
-#include <GLFW/glfw3.h>
-
-class Window {
-public:
-    Window();
-    explicit Window(GLFWwindow* wnd);
-    Window(const Window& wnd) = delete;
-    ~Window();
-public:
-    Window& operator=(const Window& wnd) = delete;
-public:
-    void SetWindow(GLFWwindow* wnd);
-    GLFWwindow* AsWindow();
-private:
-    GLFWwindow* window;
 };*/
+
+
