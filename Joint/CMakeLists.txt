@@ -10,7 +10,7 @@ add_subdirectory(vendor/glad)
 # Joint API
 add_library(Joint STATIC
         src/core/Application.cpp
-        src/core/Window.cpp)
+        src/core/Window.cpp include/Joint/Console.h src/debug/Console.cpp)
 target_include_directories(Joint
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw/include
@@ -18,4 +18,18 @@ target_include_directories(Joint
 target_link_libraries(Joint
         PUBLIC glfw
         PUBLIC glad)
+
+# Build Configuration
+if (CMAKE_CONFIGURATION_TYPES) # For Multi Configuration Generators
+    set(CMAKE_CONFIGURATION_TYPES ${JOINT_BUILD_TYPES} CACHE INTERNAL "")
+else()
+    # For Single Configuration Generators
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${JOINT_BUILD_TYPES}")
+
+    if (NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE) # Select Default Build Configuration
+    elseif(NOT CMAKE_BUILD_TYPE IN_LIST JOINT_BUILD_TYPES)
+        message(FATAL_ERROR "Invalid build type: ${CMAKE_BUILD_TYPE}")
+    endif()
+endif()
 

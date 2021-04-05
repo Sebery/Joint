@@ -1,5 +1,5 @@
 #include "Joint/Application.h"
-#include <iostream>
+#include "Joint/Console.h"
 
 namespace Joint {
 
@@ -10,16 +10,16 @@ namespace Joint {
             created = true;
             return std::unique_ptr<Application>(new Application);
         } else {
-            std::cout << "App Already Created\n";
+            JOINT_INFO_LOG("App already created");
             return std::unique_ptr<Application>(nullptr);
         }
     }
 
     Application::Application()
-        : mainWindow{ }  { std::cout << "App Created\n"; }
+        : mainWindow{ }  { JOINT_INFO_LOG("App Created"); }
 
     Application::~Application() {
-        std::cout << "App Deleted\n";
+        JOINT_INFO_LOG("App Deleted");
         Terminate();
     }
 
