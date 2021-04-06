@@ -34,7 +34,7 @@ namespace Joint {
         if (!glfwInit())
             return false;
 
-        if (!mainWindow.SetWindow("Joint", 400, 400))
+        if (!mainWindow.SetWindow("Joint Engine", 400, 400))
             return false;
 
         mainWindow.MakeContextCurrent();
@@ -47,13 +47,19 @@ namespace Joint {
 
     void Application::Run() {
         while (!mainWindow.WindowShouldClose()) {
+            glClearColor(0.5f, 1.0f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+            ProcessInput();
 
             mainWindow.SwapBuffers();
 
             glfwPollEvents();
         }
+    }
+
+    void Application::ProcessInput() {
+        mainWindow.ProcessInput();
     }
 
     void Application::Terminate() {

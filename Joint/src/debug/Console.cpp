@@ -18,6 +18,15 @@ namespace Joint {
         std::cout << "\n";
     }
 
+    void Console::Log(const char *format, ...) const {
+        PrintHeader();
+        va_list args;
+        va_start(args, format);
+        vprintf(format, args);
+        va_end(args);
+        PrintFooter();
+    }
+
 }
 
 

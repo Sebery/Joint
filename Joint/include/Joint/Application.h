@@ -24,6 +24,7 @@ namespace Joint {
         // Create application using static method CreateApplication
         Application();
     private:
+        void ProcessInput();
         void Terminate();
     private:
         Window mainWindow;

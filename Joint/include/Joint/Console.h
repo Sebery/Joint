@@ -1,8 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <cstdio>
 
-// TODO: Add log level variable in cmake
+// TODO: Add log level variable in cmake, add log type and color in output
 
 // Select default log level
 #ifndef JOINT_LOG_LEVEL
@@ -48,21 +49,7 @@ namespace Joint {
         Console& operator=(Console&& cns) noexcept = delete;
         Console& operator=(const Console& cns) = delete;
     public:
-        template<typename ...Args>
-        void Log(const char* format, Args&& ...args) const {
-            PrintHeader();
-            printf(format, std::forward<Args>(args)...);
-            PrintFooter();
-        }
-
-        template<typename ...Args>
-        void Log(LOG_LEVEL logLevel, const char* format, Args&& ...args) const {
-            if (logLevel <= JOINT_LOG_LEVEL) {
-                PrintHeader();
-                printf(format, std::forward<Args>(args)...);
-                PrintFooter();
-            }
-        }
+        void Log(const char* format, ...) const;
     private:
         void PrintHeader() const;
         void PrintFooter() const;

@@ -1,10 +1,14 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Joint {
 
     class Window {
+    private:
+        // Callbacks
+        static void FramebufferSizeCB(GLFWwindow* wnd, int width, int height);
     public:
         Window();
         Window(const char* title, int width, int height);
@@ -19,24 +23,14 @@ namespace Joint {
         void MakeContextCurrent();
         int WindowShouldClose() const;
         void SwapBuffers();
+        void ProcessInput();
+    private:
+        void SetCallbacks();
     private:
         GLFWwindow* window;
     };
 
 }
 
-/*
-class Window {
-public:
-    Window();
-    Window(const Window& win) = delete;
-    Window& operator=(const Window& win) = delete;
-    ~Window();
-public:
-    void SetWindow(const char* title, int width, int height);
-    GLFWwindow* AsWindow();
-private:
-    GLFWwindow* window;
-};*/
 
 
