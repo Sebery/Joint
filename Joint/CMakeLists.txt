@@ -10,7 +10,8 @@ add_subdirectory(vendor/glad)
 # Joint API
 add_library(Joint STATIC
         src/core/Application.cpp
-        src/core/Window.cpp include/Joint/Console.h src/debug/Console.cpp)
+        include/Joint/core/Application.h
+        include/Joint/Joint.h include/Joint/core/IEvents.h include/Joint/core/Module.h src/core/Module.cpp include/Joint/testing/TestModule.h src/testing/TestModule.cpp)
 target_include_directories(Joint
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw/include

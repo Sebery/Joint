@@ -1,8 +1,6 @@
 #pragma once
 
 // Core
-#include "Application.h"
-#include "Window.h"
-
-// Debug
-#include "Console.h"
+#include "Joint/core/Application.h"
+#include "Joint/core/IEvents.h"
+#include "Joint/core/Module.h"

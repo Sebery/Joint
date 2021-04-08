@@ -1,69 +1,56 @@
-#include "Joint/Application.h"
-#include "Joint/Console.h"
+#include "Joint/core/Application.h"
+#include <iostream>
+#include <memory>
+
+// Modules
+#include "Joint/testing/TestModule.h"
 
 namespace Joint {
 
-    std::unique_ptr<Application> Application::CreateApplication() {
-        static bool created{ false };
+    void Application::RunEngine() {
+        static std::unique_ptr<Application> app{ new Application() };
 
-        if (!created) {
-            created = true;
-            return std::unique_ptr<Application>(new Application);
+        if (!app->isRunning) {
+            app->isRunning = true;
+            std::cout << "Application running!\n";
+            app->OnStartUp();
+            app->OnUpdate();
+            app->OnShutDown();
         } else {
-            JOINT_INFO_LOG("App already created");
-            return std::unique_ptr<Application>(nullptr);
+            std::cout << "Application already running!\n";
         }
     }
 
     Application::Application()
-        : mainWindow{ }  { JOINT_INFO_LOG("App Created"); }
+        : isRunning{ false } {
+        std::cout << "Application created!\n";
+    }
 
     Application::~Application() {
-        JOINT_INFO_LOG("App Deleted");
-        Terminate();
+        std::cout << "Application destroyed!\n";
     }
 
-    bool Application::Initialize() {
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-        if (__APPLE__)
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-        if (!glfwInit())
-            return false;
-
-        if (!mainWindow.SetWindow("Joint Engine", 400, 400))
-            return false;
-
-        mainWindow.MakeContextCurrent();
-
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-            return false;
-
-        return true;
+    void Application::AddBaseModules() {
+        modules.emplace_back(new TestModule);
     }
 
-    void Application::Run() {
-        while (!mainWindow.WindowShouldClose()) {
-            glClearColor(0.5f, 1.0f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            ProcessInput();
-
-            mainWindow.SwapBuffers();
-
-            glfwPollEvents();
+    void Application::OnStartUp() {
+        AddBaseModules();
+        for (auto& m : modules) {
+            m.OnStartUp();
         }
     }
 
-    void Application::ProcessInput() {
-        mainWindow.ProcessInput();
+    void Application::OnUpdate() {
+        for (auto& m : modules) {
+            m.OnUpdate();
+        }
     }
 
-    void Application::Terminate() {
-        glfwTerminate();
+    void Application::OnShutDown() {
+        for (auto& m : modules) {
+            m.OnShutDown();
+        }
     }
 
 }

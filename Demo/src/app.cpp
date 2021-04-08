@@ -1,2 +1,7 @@
-#include <Joint/Joint.h>
-#include <Joint/EntryPoint.h>
+#include "Joint/Joint.h"
+
+int main () {
+    Joint::Application::RunEngine();
+
+    return 0;
+}
