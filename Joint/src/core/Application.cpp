@@ -4,17 +4,27 @@
 
 // Modules
 #include "Joint/testing/TestModule.h"
+#include "Joint/internal/Window.h"
 
 namespace Joint {
 
     void Application::RunEngine() {
+        // Create the application
         static std::unique_ptr<Application> app{ new Application() };
 
+        // Run the application only if it is not running
         if (!app->isRunning) {
+            // Start the engine and modules
             app->isRunning = true;
             std::cout << "Application running!\n";
             app->OnStartUp();
-            app->OnUpdate();
+
+            // Engine loop
+            while (app->isRunning) {
+                app->OnUpdate();
+            }
+
+            // Terminate the engine and modules
             app->OnShutDown();
         } else {
             std::cout << "Application already running!\n";
@@ -31,7 +41,8 @@ namespace Joint {
     }
 
     void Application::AddBaseModules() {
-        modules.emplace_back(new TestModule);
+        modules.emplace_back(new TestModule());
+        modules.emplace_back(new Window(400, 400, "Joint Engine"));
     }
 
     void Application::OnStartUp() {

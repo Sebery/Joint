@@ -4,14 +4,15 @@
 
 namespace Joint {
 
+    // RAII class to manage modules
     class Module : public IEvents {
     public:
         explicit Module(IEvents* mdl);
-        Module(Module&& mdl) = delete;
+        Module(Module&& mdl) noexcept;
         Module(const Module& mdl) = delete;
         ~Module();
     public:
-        Module& operator=(Module&& mdl) = delete;
+        Module& operator=(Module&& mdl) noexcept;
         Module& operator=(const Module& mdl) = delete;
     public:
         void OnStartUp() override;
