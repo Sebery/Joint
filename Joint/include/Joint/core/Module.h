@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Joint/core/IEvents.h"
+#include "Joint/events/IEvent.h"
 
 namespace Joint {
 
     // RAII class to manage modules
-    class Module : public IEvents {
+    class Module : public IEvent {
     public:
-        explicit Module(IEvents* mdl);
+        explicit Module(IEvent* mdl);
         Module(Module&& mdl) noexcept;
         Module(const Module& mdl) = delete;
         ~Module();
@@ -19,7 +19,7 @@ namespace Joint {
         void OnUpdate() override;
         void OnShutDown() override;
     private:
-        IEvents* module;
+        IEvent* module;
     };
 
 }

@@ -2,10 +2,11 @@
 
 namespace Joint {
 
-    class IEvents {
+    class IEvent {
     public:
-        virtual ~IEvents() = default;
+        virtual ~IEvent() = default;
     public:
+        // Events called automatically
         virtual void OnStartUp() = 0;
         virtual void OnUpdate() = 0;
         virtual void OnShutDown() = 0;

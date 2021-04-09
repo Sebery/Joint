@@ -2,7 +2,7 @@
 
 namespace Joint {
 
-    Module::Module(IEvents* mdl)
+    Module::Module(IEvent* mdl)
         : module{ mdl } {
     }
 
